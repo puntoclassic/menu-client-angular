@@ -1,0 +1,154 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-search-form></app-search-form>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16"
+            *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO">
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/carrello']">
+                    Carrello
+                </a>
+            </li>
+            <li>::</li>
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/checkout/tipologiaConsegna']">
+                    1
+                </a>
+            </li>
+            <li>::</li>
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/checkout/informazioniConsegna']">
+                    2
+                </a>
+            </li>
+            <li>::</li>
+            <li>
+                3. Riepilogo
+            </li>
+        </ol>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16"
+            *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.ASPORTO">
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/carrello']">
+                    Carrello
+                </a>
+            </li>
+            <li>::</li>
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/checkout/tipologiaConsegna']">
+                    1
+                </a>
+            </li>
+            <li>::</li>
+            <li>
+                2. Riepilogo
+            </li>
+        </ol>
+    </app-header-nav>
+    <div class="flex flex-col p-8 flex-grow">
+        <div class="flex flex-col flex-grow space-y-4">
+            <div class="w-full md:w-1/3">
+                <a [routerLink]="['/checkout/tipologiaConsegna']">
+                    <h5 class="font-semibold text-lg border-b-slate-300 border-b-2 pb-2">1. Consegna ordine</h5>
+                </a>
+            </div>
+            <div class="w-full md:w-1/3" *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO">
+                <a [routerLink]="['/checkout/informazioniConsegna']">
+                    <h5 class=" font-semibold text-lg border-b-slate-300 border-b-2 pb-2">2. Informazioni consegna</h5>
+                </a>
+            </div>
+            <div class="w-full md:w-1/3" *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO">
+                <h5 class="font-semibold text-lg border-b-slate-300 border-b-2 pb-2">3. Riepilogo</h5>
+            </div>
+            <div class="w-full md:w-1/3" *ngIf="cartState.tipologiaConsegna!=TipologiaConsegna.DOMICILIO">
+                <h5 class="font-semibold text-lg border-b-slate-300 border-b-2 pb-2">2. Riepilogo</h5>
+            </div>
+            <div class="w-full md:w-1/3">
+                <div class="flex flex-col space-y-4 pt-4">
+                    <div class="w-full">
+                        <h6 class="uppercase font-semibold">Informazioni di consegna</h6>
+                        <p *ngIf="cartState.tipologiaConsegna!=TipologiaConsegna.DOMICILIO">Hai scelto di ritirare il
+                            tuo ordine
+                            (asporto)</p>
+                        <p *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO">Hai scelto la consegna a
+                            domicilio</p>
+                    </div>
+                    <div class="w-full" *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO">
+                        <h6 class="uppercase font-semibold">Indirizzo e orario</h6>
+
+                        <table class="w-full">
+                            <tr>
+                                <td class="font-medium">Indirizzo</td>
+                                <td>{{cartState.indirizzo}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Orario</td>
+                                <td>{{cartState.orario}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="w-full ">
+                        <h6 class="uppercase font-semibold">Cosa c'è nel tuo ordine</h6>
+                        <div class="p-4 bg-slate-100">
+                            <table class="flex flex-col">
+                                <thead>
+                                    <tr class="flex border-b">
+                                        <th class="w-4/6 text-left">Cibo</th>
+                                        <th class="w-1/6 text-center">Quantità</th>
+                                        <th class="w-1/6 text-center">Prezzo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr app-carrello-row *ngFor="let item of items" [actionsVisible]="false"
+                                        [row]="item">
+                                    </tr>
+                                    <tr app-carrello-row
+                                        *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO && speseConsegnaItem"
+                                        [actionsVisible]="false" [row]="speseConsegnaItem">
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="flex border-b py-2">
+                                        <td class="w-4/6 text-left"></td>
+                                        <td class="w-1/6 text-center font-bold">Totale</td>
+                                        <td class="w-1/6 text-center"
+                                            *ngIf="cartState.tipologiaConsegna===TipologiaConsegna.DOMICILIO && speseConsegnaItem">
+                                            {{cartState.total+speseConsegnaItem.item.price | priceOutput}}
+                                        </td>
+                                        <td class="w-1/6 text-center"
+                                            *ngIf="cartState.tipologiaConsegna!==TipologiaConsegna.DOMICILIO">
+                                            {{cartState.total | priceOutput}}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="w-full ">
+                        <form class="flex flex-col m-0" [formGroup]="form" (submit)="onSubmit(form.value)">
+                            <div class="flex flex-col py-2">
+                                <label class="form-label">Note</label>
+                                <textarea [formControl]="noteControl" class="text-input"></textarea>
+                            </div>
+                            <div class="flex flex-col py-2 items-start">
+                                <button type="submit" class="btn-success">Invia ordine</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

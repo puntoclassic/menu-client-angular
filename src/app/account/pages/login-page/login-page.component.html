@@ -1,0 +1,72 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-home-button></app-home-button>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" routerLink="/account/login">
+                    Profilo
+                </a>
+            </li>
+            <li>::</li>
+            <li>Accedi</li>
+        </ol>
+    </app-header-nav>
+    <div class="px-8 pt-4">
+        <app-messages></app-messages>
+    </div>
+    <div class='flex flex-grow justify-center items-center'>
+        <form class="w-full p-16 md:p-0  md:w-1/3 flex flex-col space-y-2
+" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit(loginForm.value)">
+            <input type="hidden" [formControl]="backUrlControl" />
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Email</label>
+                <input type="text" [appTextInput]="emailControl" [formControl]="emailControl" />
+                <div class="invalid-feedback" *appFieldErrors="emailControl">
+                    <span *ngIf="emailControl.hasError('required')">Il campo email è
+                        obbligatorio</span>
+                    <span *ngIf="emailControl.hasError('email')">Indirizzo email non valido</span>
+
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Password</label>
+                <input type="password" [appTextInput]="passwordControl" [formControl]="passwordControl" />
+                <div class="invalid-feedback" *appFieldErrors="passwordControl">
+                    <span *ngIf="passwordControl.hasError('required')">Il campo password è
+                        obbligatorio</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-0.5">
+                <a routerLink="/account/reset-password" class="hover:text-red-900">
+                    Ho dimenticato la password
+                </a>
+                <a routerLink="/account/verifica-account" class="hover:text-red-900">
+                    Il mio account non è attivo
+                </a>
+            </div>
+            <div class="flex flex-row space-x-2">
+                <button [disabled]="isPending || (!loginForm.valid && loginForm.touched)"
+                    class="btn-primary flex flex-row space-x-2" (mousedown)="$event.preventDefault()">
+                    <app-button-pending *ngIf="isPending"></app-button-pending>
+                    <span>
+                        Accedi
+                    </span>
+                </button>
+                <a [routerLink]="['/account/signin']" class="btn-secondary-outlined">
+                    Crea account
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>

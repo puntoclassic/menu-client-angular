@@ -1,0 +1,23 @@
+name: 'Compila applicazione'
+description: 'Compila applicazione Angular creando il pacchetto di distribuzione'
+inputs:   
+  version-code:
+    default: ${{github.run_number}}
+    type: string
+  configuration:
+    default: development
+    type: string        
+runs:
+  using: 'composite'
+  steps:
+    - name: Install dependencies
+      run: npm install
+      shell: bash
+    - name: Build version
+      run: npm run build -- --configuration=${{inputs.configuration}} --output-path=dist/${{inputs.configuration}}
+      shell: bash
+    - name: Generate package
+      uses: actions/upload-artifact@v3
+      with:
+        name: "build_${{inputs.configuration}}_${{inputs.version-code}}"
+        path: "dist/${{inputs.configuration}}"

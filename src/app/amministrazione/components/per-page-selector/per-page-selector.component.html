@@ -1,0 +1,6 @@
+<div class="m-0 flex space-x-2 items-center h-10">
+    <label class="text-sm">Elementi per pagina</label>
+    <select name="elementsPerPage" class="select-input" [formControl]="selectControl" (change)="onSelectChange()">
+        <option *ngFor="let num of [2,5,10,20,50]" [value]="num">{{num}}</option>
+    </select>
+</div>

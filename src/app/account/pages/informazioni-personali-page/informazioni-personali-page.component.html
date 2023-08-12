@@ -1,0 +1,65 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-home-button></app-home-button>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" routerLink="/account/">
+                    Profilo
+                </a>
+            </li>
+            <li>::</li>
+            <li>Informazioni personali</li>
+        </ol>
+    </app-header-nav>
+    <div class="px-8 pt-4">
+        <app-messages></app-messages>
+    </div>
+    <div class='pl-8 pr-8 flex flex-col space-y-4'>
+        <form class="w-full p-16 md:p-0  md:w-1/3 flex flex-col space-y-2" [formGroup]="form"
+            (ngSubmit)="onFormSubmit(form.value)">
+            <h6 class="text-xl antialiased">Informazioni personali</h6>
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Nome</label>
+                <input type="text" autocomplete="name" [formControl]="firstnameControl"
+                    [appTextInput]="firstnameControl" />
+                <div class="invalid-feedback" *appFieldErrors="firstnameControl">
+                    <span *ngIf="firstnameControl.hasError('required')">Il campo nome è
+                        obbligatorio</span>
+                    <span *ngIf="firstnameControl.hasError('pattern')">Il campo nome può contenere
+                        solo lettere</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Cognome</label>
+                <input type="text" autocomplete="name" [formControl]="lastnameControl"
+                    [appTextInput]="lastnameControl" />
+                <div class="invalid-feedback" *appFieldErrors="lastnameControl">
+                    <span *ngIf="lastnameControl.hasError('required')">Il campo nome è
+                        obbligatorio</span>
+                    <span *ngIf="lastnameControl.hasError('pattern')">Il campo nome può contenere
+                        solo lettere</span>
+                </div>
+            </div>
+
+            <div class="flex flex-row space-x-2">
+                <button [disabled]="isPending || !this.form.valid" type="submit" class="btn-primary"
+                    (mousedown)="$event.preventDefault()">
+                    <span *ngIf="isPending" class="spinner-border spinner-border-sm me-2" role="status"
+                        aria-hidden="true"></span>
+                    Aggiorna informazioni
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>

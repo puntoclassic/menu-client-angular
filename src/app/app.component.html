@@ -1,0 +1,2 @@
+<router-outlet *ngIf="userServiceReady"></router-outlet>
+<app-loading-page class="d-flex flex-grow-1" *ngIf="!userServiceReady"></app-loading-page>

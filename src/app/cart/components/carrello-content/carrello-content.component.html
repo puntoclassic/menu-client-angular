@@ -1,0 +1,28 @@
+<div class="w-full">
+    <table class="flex flex-col">
+        <thead>
+            <tr class='flex'>
+                <th class="w-3/6 text-left">Cibo</th>
+                <th class="w-1/6 text-center">Quantità</th>
+                <th class="w-1/6 text-center">Prezzo</th>
+                <th class="w-1/6 text-center">Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr app-carrello-row *ngFor="let item of items" [actionsVisible]="true" [row]="item"></tr>
+        </tbody>
+        <tfoot>
+            <tr class='flex text-center pt-2'>
+                <td class="w-3/6"></td>
+                <td class="w-1/6 font-semibold">Totale</td>
+                <td class="w-1/6">{{ total }} €</td>
+                <td class="w-1/6"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="w-full" *ngIf="userLogged">
+    <div class="flex">
+        <app-cassa-button></app-cassa-button>
+    </div>
+</div>

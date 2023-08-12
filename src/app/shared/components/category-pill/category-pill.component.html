@@ -1,0 +1,4 @@
+<li class="w-full md:w-auto flex items-center justify-center">
+    <a [routerLink]="['/categoria/',item.slug]"
+        [ngClass]="!isCurrent ? 'text-white p-4 hover:bg-red-900 hover:text-white w-full text-center mx-2 md:mx-0':'text-white p-4 hover:bg-red-900 hover:text-white w-full text-center mx-2 md:mx-0 bg-red-900 border border-slate-50/5'">{{item.name}}</a>
+</li>

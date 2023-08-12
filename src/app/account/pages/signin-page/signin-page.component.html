@@ -1,0 +1,101 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left class="col-lg-8">
+            <app-home-button></app-home-button>
+        </app-topbar-left>
+        <app-topbar-right class="col-lg-4">
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" routerLink="/account/login">
+                    Profilo
+                </a>
+            </li>
+            <li>::</li>
+            <li>Crea account</li>
+        </ol>
+    </app-header-nav>
+
+    <app-messages></app-messages>
+    <div class='flex flex-grow justify-center items-center'>
+        <form class="w-full p-16 md:p-0  md:w-1/3 flex flex-col space-y-2" [formGroup]="signinForm"
+            (ngSubmit)="onSigninSubmit(signinForm.value)">
+            <div class="flex flex-col space-y-2">
+
+                <label class="form-label">Email</label>
+                <input type="text" autocomplete="username" [formControl]="emailControl" [appTextInput]="emailControl" />
+                <div class="invalid-feedback" *appFieldErrors="emailControl">
+                    <span *ngIf="emailControl.hasError('required')">Il campo email è
+                        obbligatorio</span>
+                    <span *ngIf="emailControl.hasError('email')">Email non valida</span>
+                    <span *ngIf="emailControl.hasError('emailIsBusy')">Email in uso</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Nome</label>
+                <input type="text" autocomplete="name" [formControl]="firstnameControl"
+                    [appTextInput]="firstnameControl" />
+                <div class="invalid-feedback" *appFieldErrors="firstnameControl">
+                    <span *ngIf="firstnameControl.hasError('required')">Il campo nome è
+                        obbligatorio</span>
+                    <span *ngIf="firstnameControl.hasError('pattern')">Il campo nome può contenere
+                        solo lettere</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+
+                <label class="form-label">Cognome</label>
+                <input type="text" autocomplete="family-name" [formControl]="lastnameControl"
+                    [appTextInput]="lastnameControl" />
+                <div class="invalid-feedback" *appFieldErrors="lastnameControl">
+                    <span *ngIf="lastnameControl.hasError('required')">Il campo cognome è
+                        obbligatorio</span>
+                    <span *ngIf="lastnameControl.hasError('pattern')">Il campo cognome può contenere
+                        solo lettere</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+
+                <label class="form-label">Password</label>
+                <input type="password" [formControl]="passwordControl" [appTextInput]="passwordControl" />
+                <div class="invalid-feedback" *appFieldErrors="passwordControl">
+                    <span *ngIf="passwordControl.hasError('required')">Il campo password è
+                        obbligatorio</span>
+                    <span *ngIf="passwordControl.hasError('pattern')">
+                        La password deve essere lunga almeno 8 caratteri e contenere almeno: 1 lettera maiuscola, 1
+                        numero e 1
+                        carattere speciale
+                    </span>
+                </div>
+
+            </div>
+            <div class="flex flex-col space-y-2">
+                <label class="form-label">Conferma password</label>
+                <input type="password" [appTextInput]="confirmPasswordControl" [formControl]="confirmPasswordControl" />
+                <div class="invalid-feedback" *appFieldErrors="confirmPasswordControl">
+                    <span *ngIf="confirmPasswordControl.hasError('required')">Il campo conferma
+                        password è
+                        obbligatorio</span>
+                    <span *ngIf="confirmPasswordControl.hasError('passwordMatch')">Le due password devono
+                        corrispondere</span>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-2 items-start">
+                <button [disabled]="isPending || !this.signinForm.valid" type="submit" class="btn-primary"
+                    (mousedown)="$event.preventDefault()">
+                    <app-button-pending *ngIf="isPending"></app-button-pending>
+                    <span>Crea account</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+</div>

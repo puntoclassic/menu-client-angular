@@ -1,0 +1,16 @@
+import { Component, HostBinding, OnInit } from "@angular/core";
+
+@Component({
+  selector: "app-not-found-page",
+  templateUrl: "./not-found-page.component.html",
+  styleUrls: ["./not-found-page.component.scss"],
+})
+export class NotFoundPageComponent implements OnInit {
+  @HostBinding("class")
+  classes = "flex flex-col flex-grow";
+
+  constructor() {}
+
+  ngOnInit(): void {
+  }
+}

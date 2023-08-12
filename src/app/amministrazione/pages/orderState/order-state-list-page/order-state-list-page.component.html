@@ -1,0 +1,89 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-home-button></app-home-button>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" routerLink="/account/">
+                    Profilo
+                </a>
+            </li>
+            <li>::</li>
+            <li>Stati ordine</li>
+        </ol>
+    </app-header-nav>
+
+
+    <div class="flex flex-col p-8 flex-grow">
+        <app-messages></app-messages>
+        <div class="w-full bg-slate-500 p-4">
+            <p class="text-xl antialiased text-white">Stati ordine</p>
+        </div>
+        <div class="flex w-full bg-gray-100 p-2">
+            <div class="w-1/2">
+                <div class="flex items-start">
+                    <a [routerLink]="['crea']" class="btn-primary">Crea</a>
+                </div>
+            </div>
+            <div class="w-1/2 flex justify-end">
+                <app-admin-search-form [currentValue]="searchKey" placeHolder="Cerca uno stato"
+                    (formSearchEvent)="onFormSearchEvent($event)">
+                </app-admin-search-form>
+            </div>
+        </div>
+        <div class="flex w-full flex-grow">
+            <div *ngIf="items==null" class="flex flex-col flex-grow justify-center items-center">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-live="polite"
+                    aria-busy="true" aria-labelledby="title-05b desc-05b" class="w-12 h-12 animate animate-spin">
+                    <circle cx="12" cy="12" r="10" class="stroke-slate-200" stroke-width="4" />
+                    <path
+                        d="M12 22C14.6522 22 17.1957 20.9464 19.0711 19.0711C20.9464 17.1957 22 14.6522 22 12C22 9.34784 20.9464 6.8043 19.0711 4.92893C17.1957 3.05357 14.6522 2 12 2"
+                        class="stroke-red-900" stroke-width="4" />
+                </svg>
+            </div>
+            <div class="flex w-full flex-grow" *ngIf="items!=null">
+                <table class="w-full flex flex-col" *ngIf="items.length>0">
+                    <thead>
+                        <tr class="h-10 flex flex-row items-center">
+                            <th class="w-2/12 md:w-1/12">
+                                <app-sortable-th class="flex justify-center" column="id" [orderBy]="orderBy"
+                                    [ascending]="ascending" (clickEvent)="onSortTriggered('id')">Id</app-sortable-th>
+                            </th>
+                            <th class="w-5/12 md:w-5/12">
+                                <app-sortable-th class="flex justify-start" column="name" [orderBy]="orderBy"
+                                    [ascending]="ascending"
+                                    (clickEvent)="onSortTriggered('name')">Nome</app-sortable-th>
+                            </th>
+                            <th class="w-2/12 text-center hidden lg:block">
+                                Classe CSS badge
+                            </th>
+                            <th class="w-5/12 md:w-4/12 text-center">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="h-10 w-full odd:bg-gray-100 flex-row flex flex-grow" app-order-state-row
+                            *ngFor="let state of items" [item]="state"></tr>
+                    </tbody>
+                </table>
+                <p *ngIf="items!=null && items.length == 0">Non ci sono stati da mostrare</p>
+            </div>
+        </div>
+        <div class="w-full flex px-4 py-4">
+            <app-per-page-selector [currentValue]="itemsPerPage"
+                (itemsPerPageChangeEvent)="onItemsPerPageChange($event)"></app-per-page-selector>
+        </div>
+        <div class="w-full flex px-4 py-4 bg-gray-100">
+            <app-paginator [currentPage]="currentPage" [count]="count" [perPage]="itemsPerPage"
+                (onPageChangeEvent)="onPageChange($event)"></app-paginator>
+        </div>
+    </div>
+</div>

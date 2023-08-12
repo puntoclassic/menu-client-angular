@@ -1,0 +1,57 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-search-form></app-search-form>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/carrello']">
+                    Carrello
+                </a>
+            </li>
+            <li>::</li>
+            <li>1. Tipologia consegna</li>
+        </ol>
+    </app-header-nav>
+
+
+    <div class="flex flex-col p-8 flex-grow">
+        <div class="flex flex-col flex-grow space-y-4">
+            <div class="w-full md:w-1/2">
+                <form class="w-full m-0 flex flex-col space-y-2" (submit)="onSubmit(form.value)">
+                    <h5 class="font-semibold text-lg  border-b-slate-300 border-b-2 pb-2">1. Consegna ordine</h5>
+                    <p>Scegli il modo in cui vuoi ricevere il tuo ordine</p>
+                    {{form.errors}}
+                    <div class="form-row mb-3">
+                        <select [appSelectInput]="tipologiaConsegnaControl" [formControl]="tipologiaConsegnaControl">
+                            <option value="">-- Nessuna selezione --</option>
+                            <option value="ASPORTO">Asporto</option>
+                            <option value="DOMICILIO">A domicilio</option>
+                        </select>
+                        <div class="invalid-feedback" *appFieldErrors="tipologiaConsegnaControl">
+                            <span *ngIf="tipologiaConsegnaControl.hasError('required')">Il campo email è
+                                obbligatorio</span>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <button type="submit" class="btn-secondary-outlined w-20 h-10">Vai</button>
+                    </div>
+                </form>
+            </div>
+            <div class="w-full md:w-1/2">
+                <h5 class="font-semibold text-lg border-b-slate-300 border-b-2 pb-2">2. Indirizzo e orario</h5>
+            </div>
+            <div class="w-full md:w-1/2">
+                <h5 class="font-semibold text-lg border-b-slate-300 border-b-2 pb-2">3. Riepilogo</h5>
+            </div>
+        </div>
+    </div>
+</div>

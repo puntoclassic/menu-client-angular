@@ -1,0 +1,28 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-search-form></app-search-form>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <app-category-pills></app-category-pills>
+    </app-header-nav>
+
+    <div class="flex flex-col p-8">
+        <div class="w-full pb-4">
+            <h4 class="font-bold text-lg">Risultati di ricerca per "{{key}}"</h4>
+        </div>
+
+        <div class="w-full space-y-4" *ngIf="foods.length == 0">
+            <p>Nessun risultato trovato</p>
+        </div>
+        <div class="w-full space-y-4">
+            <app-food-item *ngFor="let item of foods" [item]="item" class="flex flex-row "></app-food-item>
+        </div>
+    </div>
+</div>

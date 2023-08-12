@@ -1,0 +1,11 @@
+<div class="flex flex-row space-x-2 h-10">
+    <button (click)="pageChange(currentPage-1)" [disabled]="currentPage-1 == 0"
+        class="btn-secondary-outlined">Precedente
+    </button>
+    <button *ngFor="let num of numberOfPages"
+        [class]="num == currentPage ? 'btn-secondary-outlined-active': 'btn-secondary-outlined'"
+        (click)="pageChange(num)">{{num}}</button>
+    <button (click)="pageChange(currentPage+1)" class="btn-secondary-outlined"
+        [disabled]="currentPage == numberOfPages.length">Prossima
+    </button>
+</div>

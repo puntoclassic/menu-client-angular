@@ -1,0 +1,36 @@
+<ul style="list-style-type: none;" class="p-0" id="admin-dashboard">
+    <li>
+        <h4>Amministrazione</h4>
+    </li>
+    <li>
+        <h6 class="mt-1">CATALOGO</h6>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/categorie']"><i
+                class="bi bi-archive me-2"></i>Categorie</a>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/cibi']"><i class="bi bi-book me-2"></i>Cibi</a>
+    </li>
+    <li>
+        <h6 class="mt-3">VENDITE</h6>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/clienti']">Clienti</a>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/ordini']">Ordini</a>
+    </li>
+
+    <li>
+        <h6 class="mt-3">IMPOSTAZIONI</h6>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/impostazioni/generali']">
+            Generali</a>
+    </li>
+    <li>
+        <a class="text-decoration-none" [routerLink]="['/amministrazione/impostazioni/statiOrdine']">
+            Stati ordine</a>
+    </li>
+</ul>

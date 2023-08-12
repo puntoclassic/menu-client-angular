@@ -1,0 +1,12 @@
+<div class="w-3/4">
+    <div class="flex flex-col">
+        <div>{{ item.name }}</div>
+        <div class="font-extralight text-sm">{{item.ingredients}}</div>
+    </div>
+</div>
+<div class="w-1/4">
+    <div class="flex justify-end items-center space-x-2">
+        <span class="font-light antialiased">{{item.price | priceOutput}}</span>
+        <app-add-to-cart-button [item]="item"></app-add-to-cart-button>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+name: "Test and deploy"
+run-name: "Test and deploy build ${{github.run_number}}"
+
+on: [workflow_dispatch]
+
+jobs:
+  init:
+    name: Init params for workflow
+    runs-on: self-hosted    
+    outputs:
+        version-code: ${{steps.initstep.outputs.version-code}}
+    steps:
+        - name: Init params
+          id: initstep
+          run: |
+            echo "version-code=$(date +'%Y%m%d')${{github.run_number}}" >> $GITHUB_OUTPUT
+        - name: Print new version code
+          run: echo "${{steps.initstep.outputs.version-code}}"   
+  integrate:
+    needs: [init]
+    name: Integrate new features/bug fixings
+    runs-on: self-hosted
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3      
+      - name: Install dependencies
+        run: npm install 
+      - name: Execute tests
+        run: npm run test-ci        
+  delivery:    
+    name: Create package for delivery
+    needs: [init,integrate]
+    runs-on: self-hosted
+    environment: production
+    env:
+      version-code: ${{needs.init.outputs.version-code}}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3     
+      - name: Compila versione "dev"
+        uses: ./.github/actions/ng-build
+        with:
+          version-code: ${{env.version-code}}  
+  deploy-test-server:    
+    name: Deploy to test server
+    needs: [init,delivery]
+    runs-on: self-hosted
+    environment: test-server
+    env:
+      version-code: ${{needs.init.outputs.version-code}}
+    steps:
+      - name: Get Build package
+        uses: actions/download-artifact@v3
+        with:
+          name: "build_development_${{env.version-code}}"
+          path: ./build_${{env.version-code}}
+      - name: Upload to test-server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          local-dir: ./build_${{env.version-code}}/
+          dangerous-clean-slate: true
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+      
+       

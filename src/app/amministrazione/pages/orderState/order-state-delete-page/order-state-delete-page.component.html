@@ -1,0 +1,36 @@
+<div class="flex flex-col flex-grow">
+    <app-topbar>
+        <app-topbar-left>
+            <app-home-button></app-home-button>
+        </app-topbar-left>
+        <app-topbar-right>
+            <app-cart-button></app-cart-button>
+            <app-account-manage></app-account-manage>
+        </app-topbar-right>
+    </app-topbar>
+    <app-header></app-header>
+    <app-header-nav>
+        <ol class="flex flex-row space-x-2 items-center pl-8 h-16">
+
+            <li>
+                <a class="breadcrumb-link" [routerLink]="['/amministrazione/stati-ordine']">
+                    Stati ordine
+                </a>
+            </li>
+            <li>::</li>
+            <li>Elimina stato ordine</li>
+        </ol>
+    </app-header-nav>
+
+
+    <div class="flex flex-col p-8 flex-grow space-y-2 items-start">
+        <form class="m-0 flex flex-col space-y-2 items-start" [formGroup]="form" (submit)="onSubmit(form.value)">
+
+            <p>Stai per eliminare lo stato <b>"{{nome}}"</b>. Sei sicuro di voler fare ? Questa operazione è
+                irreversibile.
+            </p>
+            <button type="submit" class="btn-danger">Elimina</button>
+        </form>
+
+    </div>
+</div>
