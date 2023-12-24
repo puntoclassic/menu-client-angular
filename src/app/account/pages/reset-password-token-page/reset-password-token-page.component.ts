@@ -1,21 +1,20 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
-} from "@angular/forms";
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { AccountService } from "src/app/account/services/account.service";
-import EmailBusyValidator from "src/app/account/validators/emailBusyValidator";
-import { passwordMatch } from "src/app/account/validators/passwordMatch";
-import { MessageService } from "src/app/shared/services/message.service";
-import { MessageType, ResetPasswordTokenFields } from "src/types";
+} from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AccountService } from 'src/app/account/services/account.service';
+import { passwordMatch } from 'src/app/account/validators/passwordMatch';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { MessageType, ResetPasswordTokenFields } from 'src/types';
 
 @Component({
-  selector: "app-reset-password-token-page",
-  templateUrl: "./reset-password-token-page.component.html",
-  styleUrls: ["./reset-password-token-page.component.scss"],
+  selector: 'app-reset-password-token-page',
+  templateUrl: './reset-password-token-page.component.html',
+  styleUrls: ['./reset-password-token-page.component.scss'],
 })
 export class ResetPasswordTokenPageComponent implements OnInit {
   isPending: boolean;
@@ -30,54 +29,50 @@ export class ResetPasswordTokenPageComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private currentRoute: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder
   ) {
-    this.emailControl = formBuilder.control("", {
-      updateOn: "change",
-      validators: Validators.compose([
-        Validators.required,
-        Validators.email,
-      ]),
+    this.emailControl = formBuilder.control('', {
+      updateOn: 'change',
+      validators: Validators.compose([Validators.required, Validators.email]),
     });
 
-    this.tokenControl = this.formBuilder.control("", {
-      updateOn: "change",
-      validators: [
-        Validators.required,
-      ],
+    this.tokenControl = this.formBuilder.control('', {
+      updateOn: 'change',
+      validators: [Validators.required],
     });
 
-    this.passwordControl = this.formBuilder.control("", {
-      updateOn: "change",
+    this.passwordControl = this.formBuilder.control('', {
+      updateOn: 'change',
       validators: [
         Validators.required,
         Validators.pattern(
           RegExp(
-            "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
-          ),
+            '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+          )
         ),
       ],
     });
 
-    this.confirmPasswordControl = this.formBuilder.control("", {
-      updateOn: "change",
+    this.confirmPasswordControl = this.formBuilder.control('', {
+      updateOn: 'change',
       validators: [
         Validators.required,
-        Validators.pattern(RegExp("^[a-zA-Z]")),
+        Validators.pattern(RegExp('^[a-zA-Z]')),
       ],
     });
 
-    this.form = this.formBuilder.group({
-      email: this.emailControl,
-      token: this.tokenControl,
-      password: this.passwordControl,
-      confirmPassword: this.confirmPasswordControl,
-    }, {
-      updateOn: "change",
-      validators: [
-        passwordMatch(),
-      ],
-    });
+    this.form = this.formBuilder.group(
+      {
+        email: this.emailControl,
+        token: this.tokenControl,
+        password: this.passwordControl,
+        confirmPassword: this.confirmPasswordControl,
+      },
+      {
+        updateOn: 'change',
+        validators: [passwordMatch()],
+      }
+    );
 
     this.currentRoute.queryParams.subscribe((params: Params) => {
       this.tokenControl.setValue(params.token ?? null);
@@ -86,10 +81,10 @@ export class ResetPasswordTokenPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.tokenControl.value) {
-      this.router.navigate(["/account/login"]).then(() => {
+      this.router.navigate(['/account/login']).then(() => {
         this.appService.pushMessage({
           type: MessageType.ERROR,
-          text: "Richiesta non valida",
+          text: 'Richiesta non valida',
         });
       });
     }
@@ -101,21 +96,17 @@ export class ResetPasswordTokenPageComponent implements OnInit {
       this.accountService.resetPasswordWithToken(data).subscribe((result) => {
         this.isPending = false;
 
-        this.router.navigate(["/account/login"]).then(() => {
+        this.router.navigate(['/account/login']).then(() => {
           if (result) {
-            this.appService.pushMessage(
-              {
-                type: MessageType.SUCCESS,
-                text: "Password cambiata con successo",
-              },
-            );
+            this.appService.pushMessage({
+              type: MessageType.SUCCESS,
+              text: 'Password cambiata con successo',
+            });
           } else {
-            this.appService.pushMessage(
-              {
-                type: MessageType.ERROR,
-                text: "Si è verificato un errore",
-              },
-            );
+            this.appService.pushMessage({
+              type: MessageType.ERROR,
+              text: 'Si è verificato un errore',
+            });
           }
         });
       });

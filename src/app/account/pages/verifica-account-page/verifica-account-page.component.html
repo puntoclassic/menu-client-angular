@@ -21,9 +21,10 @@
             <li>Password dimenticata</li>
         </ol>
     </app-header-nav>
-    <div class="p-8">
-        <app-messages></app-messages>
-        <form cclass="w-full p-16 md:p-0  md:w-1/3 flex flex-col space-y-2" [formGroup]="form"
+    <app-messages></app-messages>
+
+    <div class="px-8 pt-8">
+        <form class="w-full p-16 md:p-0 md:w-1/3 flex flex-col space-y-2" [formGroup]="form"
             (ngSubmit)="onFormSubmit(form.value)">
             <p class="text-xl antialiased">Istruzioni</p>
             <p>Inserisci la tua email per ricevere una nuova email di attivazione.</p>

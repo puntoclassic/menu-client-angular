@@ -1,6 +1,6 @@
 <form class="m-0 flex space-x-2" [formGroup]="form" (submit)="onSubmit()">
-    <input [formControl]="searchFieldControl" [placeholder]="placeHolder" type="text" class="text-input bg-white"
-        name="search" placeholder="Cerca una categoria" />
+    <input [formControl]="searchFieldControl" autocomplete="name" [placeholder]="placeHolder" type="text"
+        class="text-input bg-white" name="search" placeholder="Cerca una categoria" />
     <button type="submit" class="btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
             class="w-6 h-6">

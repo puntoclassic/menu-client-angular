@@ -21,10 +21,8 @@
             <li>Cibi</li>
         </ol>
     </app-header-nav>
-
-
+    <app-messages></app-messages>
     <div class="flex flex-col p-8 flex-grow">
-        <app-messages></app-messages>
         <div class="w-full bg-slate-500 p-4">
             <p class="text-xl antialiased text-white">Cibi</p>
         </div>
@@ -40,7 +38,7 @@
                 </app-admin-search-form>
             </div>
         </div>
-        <div class="flex w-full flex-grow">
+        <div class="flex w-full flex-grow flex-col">
             <div *ngIf="items==null" class="flex flex-col flex-grow justify-center items-center">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-live="polite"
                     aria-busy="true" aria-labelledby="title-05b desc-05b" class="w-12 h-12 animate animate-spin">
@@ -50,37 +48,32 @@
                         class="stroke-red-900" stroke-width="4" />
                 </svg>
             </div>
-            <div class="flex w-full flex-grow" *ngIf="items!=null">
-                <table class="w-full flex flex-col" *ngIf="items.length>0">
-                    <thead>
-                        <tr class="h-10 flex flex-row items-center">
-                            <th class="w-2/12 lg:w-1/12 ">
-                                <app-sortable-th class="flex justify-center" column="id" [orderBy]="orderBy"
-                                    [ascending]="ascending" (clickEvent)="onSortTriggered('id')">Id</app-sortable-th>
-                            </th>
-                            <th class="w-6/12 md:w-5/12">
-                                <app-sortable-th class="flex justify-start" column="name" [orderBy]="orderBy"
-                                    [ascending]="ascending"
-                                    (clickEvent)="onSortTriggered('name')">Nome</app-sortable-th>
-                            </th>
-                            <th class="w-2/12 hidden lg:block">
-                                <app-sortable-th class="flex justify-center" column="category" [orderBy]="orderBy"
-                                    [ascending]="ascending"
-                                    (clickEvent)="onSortTriggered('category')">Categoria</app-sortable-th>
-                            </th>
-                            <th class="w-2/12 hidden lg:block">
-                                <app-sortable-th class="flex justify-center" column="price" [orderBy]="orderBy"
-                                    [ascending]="ascending"
-                                    (clickEvent)="onSortTriggered('price')">Prezzo</app-sortable-th>
-                            </th>
-                            <th class="w-2/12 md:w-3/12 text-center">Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="h-10 w-full odd:bg-gray-100 flex-row flex flex-grow" app-food-row
-                            *ngFor="let food of items" [food]="food"></tr>
-                    </tbody>
-                </table>
+            <div class="flex w-full flex-grow flex-col" *ngIf="items!=null">
+                <div class="hidden w-full lg:flex h-10 flex-row items-center justify-center font-bold">
+                    <div class="w-1/12 text-center">
+                        <app-sortable-th class="flex w-full flex-row space-x-1 justify-center" column="id"
+                            [orderBy]="orderBy" [ascending]="ascending"
+                            (clickEvent)="onSortTriggered('id')">Id</app-sortable-th>
+                    </div>
+                    <div class="w-6/12 text-left">
+                        <app-sortable-th class="flex w-full flex-row space-x-1 justify-start" column="name"
+                            [orderBy]="orderBy" [ascending]="ascending"
+                            (clickEvent)="onSortTriggered('name')">Nome</app-sortable-th>
+                    </div>
+                    <div class="w-2/12 text-center hidden lg:block">
+                        <app-sortable-th class="flex w-full flex-row space-x-1 justify-center"
+                            class="flex justify-center" column="category" [orderBy]="orderBy" [ascending]="ascending"
+                            (clickEvent)="onSortTriggered('category')">Categoria</app-sortable-th>
+                    </div>
+                    <div class="w-1/12 text-center hidden lg:block">
+                        <app-sortable-th class="flex w-full flex-row space-x-1 justify-center" [orderBy]="orderBy"
+                            [ascending]="ascending" (clickEvent)="onSortTriggered('price')">Prezzo</app-sortable-th>
+                    </div>
+                    <div class="w-4/12 md:w-3/12 text-center">Azioni</div>
+                </div>
+                <div class="w-full flex flex-col" *ngIf="items.length>0">
+                    <div class="w-full odd:bg-gray-100" app-food-row *ngFor="let food of items" [food]="food"></div>
+                </div>
                 <p *ngIf="items!=null && items.length == 0">Non ci sono cibi da mostrare</p>
             </div>
         </div>
