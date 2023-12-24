@@ -1,7 +1,6 @@
-import { Injectable } from "@angular/core";
-import jwt_decode from "jwt-decode";
-import { BehaviorSubject, Observable, ReplaySubject, Subject } from "rxjs";
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import {
   ChangePasswordFields,
@@ -9,10 +8,10 @@ import {
   PersonalInfoFields,
   ResetPasswordTokenFields,
   SigninFields,
-} from "src/types";
+} from 'src/types';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AccountService {
   user$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -36,8 +35,7 @@ export class AccountService {
           userLogged$.next(true);
         },
       });
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   getUser(): ReplaySubject<any> {
@@ -45,20 +43,22 @@ export class AccountService {
   }
 
   getAccountState() {
-    return this.http.get<any>("Api/Account/GetAccountStatus");
+    return this.http.get<any>('Api/Account/GetAccountStatus');
   }
 
   emailIsBusy(email: string): Observable<boolean> {
     return new Observable((emitter) => {
-      if (email != "") {
-        this.http.get<any>("Api/Account/GetEmailIsBusy", {
-          params: {
-            email: email,
-          },
-        }).subscribe((response) => {
-          emitter.next(response.status !== "Email free");
-          emitter.complete();
-        });
+      if (email != '') {
+        this.http
+          .get<any>('Api/Account/GetEmailIsBusy', {
+            params: {
+              email: email,
+            },
+          })
+          .subscribe((response: boolean) => {
+            emitter.next(response);
+            emitter.complete();
+          });
       } else {
         emitter.next(false);
         emitter.complete();
@@ -68,15 +68,16 @@ export class AccountService {
 
   login(
     email: string,
-    password: string,
+    password: string
   ): Observable<{ status: string; verified?: boolean; user?: any }> {
     var userLogged = this.userLogged$;
     var user$ = this.user$;
     return new Observable((emitter) => {
-      this.http.post<{ user?: any }>("Api/Account/PostLogin", {
-        email: email,
-        password: password,
-      })
+      this.http
+        .post<{ user?: any }>('Api/Account/PostLogin', {
+          email: email,
+          password: password,
+        })
         .subscribe({
           next(value) {
             var { user } = value;
@@ -85,14 +86,14 @@ export class AccountService {
               //login ok
               user$.next(user);
               emitter.next({
-                status: "success",
+                status: 'success',
                 verified: true,
                 user: user,
               });
               userLogged.next(true);
             } else {
               emitter.next({
-                status: "success",
+                status: 'success',
                 verified: false,
               });
 
@@ -102,7 +103,7 @@ export class AccountService {
           },
           error(err) {
             emitter.next({
-              status: "failed",
+              status: 'failed',
             });
             userLogged.next(false);
 
@@ -114,15 +115,15 @@ export class AccountService {
 
   signin(data: SigninFields): Observable<{ status: string }> {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostCreateAccount", data).subscribe({
+      this.http.post('Api/Account/PostCreateAccount', data).subscribe({
         error(err) {
           emitter.next({
-            status: "fail",
+            status: 'fail',
           });
         },
         next(value) {
           emitter.next({
-            status: "success",
+            status: 'success',
           });
         },
       });
@@ -131,7 +132,7 @@ export class AccountService {
 
   logout(): Observable<boolean> {
     return new Observable((emitter) => {
-      this.http.get("Api/Account/GetLogout").subscribe(() => {
+      this.http.get('Api/Account/GetLogout').subscribe(() => {
         this.user$.next(null);
         this.userLogged$.next(false);
         emitter.next(true);
@@ -142,9 +143,10 @@ export class AccountService {
 
   resendActivationEmail(email: string) {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostRequireNewToken", {
-        email: email,
-      })
+      this.http
+        .post('Api/Account/PostRequireNewToken', {
+          email: email,
+        })
         .subscribe(() => {
           emitter.next(true);
           emitter.complete();
@@ -154,10 +156,11 @@ export class AccountService {
 
   activateAccount(token: string, email: string): Observable<boolean> {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostActivateAccountByToken", {
-        token: token,
-        email: email,
-      })
+      this.http
+        .post('Api/Account/PostActivateAccountByToken', {
+          token: token,
+          email: email,
+        })
         .subscribe({
           error(err) {
             emitter.next(false);
@@ -173,9 +176,10 @@ export class AccountService {
 
   resetPasswordEmail(email: string): Observable<boolean> {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostResetPassword", {
-        email: email,
-      })
+      this.http
+        .post('Api/Account/PostResetPassword', {
+          email: email,
+        })
         .subscribe(() => {
           emitter.next(true);
           emitter.complete();
@@ -183,41 +187,39 @@ export class AccountService {
     });
   }
 
-  resetPasswordWithToken(
-    data: ResetPasswordTokenFields,
-  ): Observable<boolean> {
+  resetPasswordWithToken(data: ResetPasswordTokenFields): Observable<boolean> {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostChangePasswordByToken", data)
-        .subscribe({
-          error(err) {
-            emitter.next(false);
-            emitter.complete();
-          },
-          next(value) {
-            emitter.next(true);
-            emitter.complete();
-          },
-        });
+      this.http.post('Api/Account/PostChangePasswordByToken', data).subscribe({
+        error(err) {
+          emitter.next(false);
+          emitter.complete();
+        },
+        next(value) {
+          emitter.next(true);
+          emitter.complete();
+        },
+      });
     });
   }
 
   changePassword(data: ChangePasswordFields): Observable<{ type: string }> {
     return new Observable((emitter) => {
-      this.http.post<HttpResponse<GenericPostResponse>>(
-        "Api/Account/PostUpdatePassword",
-        data,
-      )
+      this.http
+        .post<HttpResponse<GenericPostResponse>>(
+          'Api/Account/PostUpdatePassword',
+          data
+        )
         .subscribe({
           error(err: HttpResponse<any>) {
             emitter.next({
-              type: err.status == 403 ? "Bad old password" : "Bad request",
+              type: err.status == 403 ? 'Bad old password' : 'Bad request',
             });
 
             emitter.complete();
           },
           next(value) {
             emitter.next({
-              type: "Success",
+              type: 'Success',
             });
             emitter.complete();
           },
@@ -227,17 +229,16 @@ export class AccountService {
 
   updatePersonalInfo(data: PersonalInfoFields) {
     return new Observable((emitter) => {
-      this.http.post("Api/Account/PostUpdatePersonalInfo", data)
-        .subscribe({
-          error(err) {
-            emitter.next(false);
-            emitter.complete();
-          },
-          next(value) {
-            emitter.next(true);
-            emitter.complete();
-          },
-        });
+      this.http.post('Api/Account/PostUpdatePersonalInfo', data).subscribe({
+        error(err) {
+          emitter.next(false);
+          emitter.complete();
+        },
+        next(value) {
+          emitter.next(true);
+          emitter.complete();
+        },
+      });
     });
   }
 }
